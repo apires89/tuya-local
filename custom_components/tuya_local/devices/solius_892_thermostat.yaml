@@ -1,0 +1,82 @@
+name: Fan coil thermostat
+products:
+  - id: jfjh9bdmn03arqzr
+    manufacturer: Solius
+    model: "892"
+entities:
+  - entity: climate
+    translation_key: thermostat
+    dps:
+      - id: 1
+        name: hvac_mode
+        type: boolean
+        mapping:
+          - dps_val: false
+            value: "off"
+          - dps_val: true
+            constraint: work_mode
+            conditions:
+              - dps_val: Heating
+                value: heat
+              - dps_val: Cooling
+                value: cool
+      - id: 2
+        name: temperature
+        type: integer
+        unit: C
+        range:
+          min: 50
+          max: 400
+        mapping:
+          - scale: 10
+            step: 5
+      - id: 3
+        name: current_temperature
+        type: integer
+        mapping:
+          - scale: 10
+      - id: 4
+        name: work_mode
+        type: string
+        hidden: true
+      - id: 28
+        name: fan_mode
+        type: string
+        mapping:
+          # shown as a moon on the display
+          - dps_val: zero
+            value: quiet
+          - dps_val: low
+            value: low
+          - dps_val: middle
+            value: medium
+          - dps_val: high
+            value: high
+          - dps_val: auto
+            value: auto
+      - id: 58
+        name: preset_mode
+        type: string
+        mapping:
+          - dps_val: program
+            value: program
+          - dps_val: manual
+            value: manual
+      - id: 107
+        name: current_humidity
+        type: integer
+  - entity: sensor
+    class: humidity
+    dps:
+      - id: 107
+        name: sensor
+        type: integer
+        unit: "%"
+        class: measurement
+  - entity: lock
+    translation_key: child_lock
+    category: config
+    dps:
+      - id: 6
+        name: lock
+        type: boolean
